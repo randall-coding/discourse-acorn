@@ -4,9 +4,9 @@ containers: {
         ports: {
             expose: "5432/tcp"
         }
-        dirs: {
-            "/bitnami/postgresql": "volume://postgresql"
-        }
+        // dirs: {
+        //     "/bitnami/postgresql": "volume://postgresql"
+        // }
         env: {
             POSTGRESQL_USERNAME: "bn_discourse"
             POSTGRESQL_DATABASE: "bitnami_discourse"
@@ -19,9 +19,6 @@ containers: {
         ports: {
             expose: "6379/tcp"
         }
-        dirs: {
-            "/bitnami/redis": "volume://redis"
-        }
         env: {
             REDIS_PASSWORD: "secret://discourse/redis_password"
         }
@@ -30,26 +27,27 @@ containers: {
     discourse: {
         image: "docker.io/bitnami/discourse:3"
         ports: {
-            expose: ["80/http"]
+            publish: ["80/http"],
+            //expose: ["80/tcp"],
         }
-        dirs: {
-            "/bitnami/discourse": "volume://discourse"
-        }
+        // dirs: {
+        //     "/bitnami/discourse": "volume://discourse"
+        // }
         env: {
             DISCOURSE_HOST:"@{services.discourse.endpoint}"
             DISCOURSE_USERNAME: "discourse"
             DISCOURSE_PASSWORD: "secret://discourse/discourse_password"
             DISCOURSE_DATABASE_HOST:"postgresql"
-            DISCOURSE_DATABASE_PORT_NUMBER:5432
+            DISCOURSE_DATABASE_PORT_NUMBER: "5432"
             DISCOURSE_DATABASE_USER:"bn_discourse"            
             DISCOURSE_DATABASE_NAME:"bitnami_discourse"
             DISCOURSE_DATABASE_PASSWORD: "secret://discourse/pg_password"
 
-            DISCOURSE_PORT_NUMBER: 80
+            DISCOURSE_PORT_NUMBER: "80"
 
             DISCOURSE_REDIS_HOST:"redis"
             DISCOURSE_REDIS_PASSWORD:"secret://discourse/redis_password"
-            DISCOURSE_REDIS_PORT_NUMBER:6379
+            DISCOURSE_REDIS_PORT_NUMBER: "6379"
 
             DISCOURSE_SMTP_HOST:""
             DISCOURSE_SMTP_PORT:""
@@ -63,61 +61,67 @@ containers: {
             POSTGRESQL_CLIENT_CREATE_DATABASE_EXTENSIONS:"hstore,pg_trgm"
         }
         dependsOn: ["postgresql", "redis"]
-        consumes: ["postgresql", "redis"]
+        memory: 2Gi
     }
 
     sidekiq: {
         image: "docker.io/bitnami/discourse:3"
-        dirs: {
-            "/bitnami/discourse": "volume://sidekiq"
-        }
+        // dirs: {
+        //     "/bitnami/discourse": "volume://sidekiq"
+        // }
         cmd: ["/opt/bitnami/scripts/discourse-sidekiq/run.sh"]
         env: {
             DISCOURSE_HOST:"@{services.discourse.endpoint}"
             DISCOURSE_DATABASE_HOST:"postgresql"
-            DISCOURSE_DATABASE_PORT_NUMBER:5432
+            DISCOURSE_DATABASE_PORT_NUMBER:"5432"
             DISCOURSE_DATABASE_USER:"bn_discourse"
             DISCOURSE_DATABASE_NAME:"bitnami_discourse"
             DISCOURSE_DATABASE_PASSWORD: "secret://discourse/pg_password"
 
-            DISCOURSE_PORT_NUMBER: 80
+            DISCOURSE_PORT_NUMBER: "80"
 
             DISCOURSE_REDIS_HOST:"redis"
             DISCOURSE_REDIS_PASSWORD:"secret://discourse/redis_password"
-            DISCOURSE_REDIS_PORT_NUMBER:6379
+            DISCOURSE_REDIS_PORT_NUMBER:"6379"
 
             DISCOURSE_SMTP_HOST:"mail.smtp.com"
-            DISCOURSE_SMTP_PORT:587
+            DISCOURSE_SMTP_PORT:"587"
             DISCOURSE_SMTP_USER:"yyy@dfdcdfx.com"
             DISCOURSE_SMTP_PASSWORD:"secret://discourse/smtp_password"
             DISCOURSE_SMTP_PROTOCOL:"tls"
         }
         dependsOn: ["postgresql", "redis"]
-        consumes: ["postgresql", "redis"]
+        memory: 2Gi
     }
 
-    nginx: {
-        image: "nginx:1.25"
-        ports: {
-            publish: "80/http"
-        }
-        dirs: {
-            "/etc/nginx/nginx.conf": "./nginx.conf"
-        }
-        dependsOn: ["discourse"]
-    }
-}=
+    // nginx: {
+    //     image: "nginx:1.25"
+    //     ports: {
+    //         publish: "80/http"
+    //     }
+    //     dirs: {
+    //         "/etc/nginx/nginx.conf": "./nginx.conf"
+    //     }
+    //     dependsOn: ["discourse"]
+    // }
+}
+
+
+// services: db: {
+//     image: "ghcr.io/acorn-io/redis:v7.#.#-#"
+// }
+
 
 secrets: discourse: {
     external: "discourse"
 }
 
-volumes: postgresql: {
+volumes: discourse: {
     size: "1G"
     accessModes: "readWriteOnce"
 }
 
-volumes: redis: {
+volumes: postgresql: {
     size: "1G"
     accessModes: "readWriteOnce"
 }
