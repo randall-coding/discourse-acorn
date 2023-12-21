@@ -14,16 +14,6 @@ containers: {
         }
     }
 
-    redis: {
-        image: "docker.io/bitnami/redis:7.0"
-        ports: {
-            expose: "6379/tcp"
-        }
-        env: {
-            REDIS_PASSWORD: "secret://discourse/redis_password"
-        }
-    }
-
     discourse: {
         image: "docker.io/bitnami/discourse:3"
         ports: {
@@ -45,13 +35,13 @@ containers: {
 
             DISCOURSE_PORT_NUMBER: "80"
 
-            DISCOURSE_REDIS_HOST:"redis"
-            DISCOURSE_REDIS_PASSWORD:"secret://discourse/redis_password"
+            DISCOURSE_REDIS_HOST: "@{service.redis.address}" //"redis"
+            DISCOURSE_REDIS_PASSWORD: "@{services.redis.secrets.admin.token}" //"secret://discourse/redis_password"
             DISCOURSE_REDIS_PORT_NUMBER: "6379"
 
-            DISCOURSE_SMTP_HOST:""
-            DISCOURSE_SMTP_PORT:""
-            DISCOURSE_SMTP_USER:""
+            DISCOURSE_SMTP_HOST: "secret://discourse/smtp_host"  //"mail.smtp.com"
+            DISCOURSE_SMTP_PORT: "secret://discourse/smtp_port" //"587"
+            DISCOURSE_SMTP_USER: "secret://discourse/smtp_user" //"user@gmail.com"
             DISCOURSE_SMTP_PASSWORD:"secret://discourse/smtp_password"
             DISCOURSE_SMTP_PROTOCOL:""
 
@@ -61,7 +51,7 @@ containers: {
             POSTGRESQL_CLIENT_CREATE_DATABASE_EXTENSIONS:"hstore,pg_trgm"
         }
         dependsOn: ["postgresql", "redis"]
-        memory: 2Gi
+        memory: 3Gi  //3Gi minimum required
     }
 
     sidekiq: {
@@ -80,53 +70,45 @@ containers: {
 
             DISCOURSE_PORT_NUMBER: "80"
 
-            DISCOURSE_REDIS_HOST:"redis"
-            DISCOURSE_REDIS_PASSWORD:"secret://discourse/redis_password"
+            DISCOURSE_REDIS_HOST:"@{service.redis.address}" //"redis"
+            DISCOURSE_REDIS_PASSWORD: "@{services.redis.secrets.admin.token}" //"secret://discourse/redis_password"
             DISCOURSE_REDIS_PORT_NUMBER:"6379"
 
-            DISCOURSE_SMTP_HOST:"mail.smtp.com"
-            DISCOURSE_SMTP_PORT:"587"
-            DISCOURSE_SMTP_USER:"yyy@dfdcdfx.com"
+            DISCOURSE_SMTP_HOST: "secret://discourse/smtp_host"  //"mail.smtp.com"
+            DISCOURSE_SMTP_PORT: "secret://discourse/smtp_port" //"587"
+            DISCOURSE_SMTP_USER: "secret://discourse/smtp_user" //"user@gmail.com"
             DISCOURSE_SMTP_PASSWORD:"secret://discourse/smtp_password"
             DISCOURSE_SMTP_PROTOCOL:"tls"
         }
         dependsOn: ["postgresql", "redis"]
-        memory: 2Gi
+        memory: 1Gi
     }
-
-    // nginx: {
-    //     image: "nginx:1.25"
-    //     ports: {
-    //         publish: "80/http"
-    //     }
-    //     dirs: {
-    //         "/etc/nginx/nginx.conf": "./nginx.conf"
-    //     }
-    //     dependsOn: ["discourse"]
-    // }
 }
 
+services: redis: {
+    image: "ghcr.io/acorn-io/redis:v7.#.#-#"
+}
 
-// services: db: {
-//     image: "ghcr.io/acorn-io/redis:v7.#.#-#"
+// services: postgres: {
+//     image: "ghcr.io/acorn-io/postgres:v15.#-#" // pulls the latest 1.x version
 // }
-
 
 secrets: discourse: {
     external: "discourse"
 }
 
-volumes: discourse: {
-    size: "1G"
-    accessModes: "readWriteOnce"
-}
 
-volumes: postgresql: {
-    size: "1G"
-    accessModes: "readWriteOnce"
-}
+// volumes: discourse: {
+//     size: "1G"
+//     accessModes: "readWriteOnce"
+// }
 
-volumes: sidekiq: {
-    size: "1G"
-    accessModes: "readWriteOnce"
-}
+// volumes: postgresql: {
+//     size: "1G"
+//     accessModes: "readWriteOnce"
+// }
+
+// volumes: sidekiq: {
+//     size: "1G"
+//     accessModes: "readWriteOnce"
+// }
