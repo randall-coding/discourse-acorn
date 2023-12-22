@@ -60,7 +60,7 @@ Clone the repo locally if you haven't already with:
 
 `git clone https://github.com/randall-coding/discourse-acorn.git`
 
-Next build and run.  You can modify the container RAM by editing the `run` command.
+Next build and run.
 
 `acorn build -t discourse`
 
