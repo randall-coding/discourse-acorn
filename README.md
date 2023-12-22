@@ -64,7 +64,7 @@ Next build and run.  You can modify the container RAM by editing the `run` comma
 
 `acorn build -t discourse`
 
-`acorn run -s discourse:discourse -n discourse --memory=1Gi discourse`
+`acorn run -s discourse:discourse -n discourse discourse`
 
 Visit your acorn dashboard to see if your deployment was successful.
 
