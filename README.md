@@ -54,7 +54,7 @@ acorn secret create discourse --data discourse_password=<password> \
 ```
 
 ## Deploying Acorn
-Now that we have the acorn cli configured, we can create and deploy our acorn image with a few simple commands.
+Now that we have the acorn cli configured, we can deploy our acorn image with a few simple commands.
 
 Clone the repo locally if you haven't already with:
 
