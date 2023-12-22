@@ -36,8 +36,8 @@ For up to date installation instructions, visit the [official docs](https://runt
 Back in our local command terminal login to acorn.io with: <br>
 `acorn login acorn.io` 
 
-## Preparing Secrets File
-Your server has settings controlled by a secret file:  
+## Preparing Secrets
+Your server has settings controlled by a "secrets" object:  
  * **discourse/discourse_password** - your chosen discourse password for user `discourse` (must be at least 10 characters)
  * **discourse/smtp_host** - (optional) your host for `smtp`
  * **discourse/smtp_port** - (optional) your port for `smtp`
