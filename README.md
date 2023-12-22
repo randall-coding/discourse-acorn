@@ -70,9 +70,9 @@ Visit your acorn dashboard to see if your deployment was successful.
 
 Click on the discourse deployment, and find the endpoint section on the right side panel.  This is your discourse instance link.
 
-![discourse_acorn_ui](https://github.com/randall-coding/discourse-private/assets/39175191/74333113-f0ab-40bd-8f08-404790eb48ad)
+![discourse_ui_div](https://github.com/randall-coding/discourse-acorn/assets/39175191/87f5e7b9-c2cd-4dcd-8729-ea81896d571f)
 
-![discourse_endpoint](https://github.com/randall-coding/discourse-private/assets/39175191/680cbcc4-d95f-48c1-aa47-1c14ed1e31cf)
+![discourse_endpoint](https://github.com/randall-coding/discourse-acorn/assets/39175191/5d5f68a9-0ce6-4537-abf6-70affa547800)
 
 If there are any errors check your acorn via the UI or with the following command:
 
@@ -91,7 +91,7 @@ For more detailed instructions on working with your Discourse server see the get
 ## Conclusion
 That's all there is to it.  We've now got a discourse server up and running from an acorn image.
 
-<img width="1093" alt="image" src="https://github.com/randall-coding/discourse-private/assets/23367718/84da72b1-5f43-42c2-b119-84e6755e1bb4">
+<img width="1093" alt="291335944-84da72b1-5f43-42c2-b119-84e6755e1bb4" src="https://github.com/randall-coding/discourse-acorn/assets/39175191/2ce3dfdb-3a51-42f7-a8db-81198f3dccee">
 
 
 ## References
