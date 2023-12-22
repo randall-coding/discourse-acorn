@@ -1,16 +1,20 @@
 containers: {
     postgresql: {
-        image: "docker.io/bitnami/postgresql:16"
+        // image: "docker.io/bitnami/postgresql:16"
+        image: "postgres:16"
         ports: {
             expose: "5432/tcp"
         }
-        // dirs: {
-        //     "/bitnami/postgresql": "volume://postgresql"
-        // }
+        dirs: {
+            "/bitnami/postgresql": "volume://postgresql"
+        }
         env: {
-            POSTGRESQL_USERNAME: "bn_discourse"
-            POSTGRESQL_DATABASE: "bitnami_discourse"
-            POSTGRESQL_PASSWORD: "secret://discourse/pg_password"
+            // POSTGRESQL_USERNAME: "bn_discourse"
+            // POSTGRESQL_DATABASE: "bitnami_discourse"
+            // POSTGRESQL_PASSWORD: "secret://discourse/pg_password"
+            POSTGRES_USER: "bn_discourse"
+            POSTGRES_DB: "bitnami_discourse"
+            POSTGRES_PASSWORD: "secret://discourse/pg_password"
         }
     }
 
@@ -20,9 +24,9 @@ containers: {
             publish: ["80/http"],
             //expose: ["80/tcp"],
         }
-        // dirs: {
-        //     "/bitnami/discourse": "volume://discourse"
-        // }
+        dirs: {
+            "/bitnami/discourse": "volume://discourse"
+        }
         env: {
             DISCOURSE_HOST:"@{services.discourse.endpoint}"
             DISCOURSE_USERNAME: "discourse"
@@ -35,13 +39,13 @@ containers: {
 
             DISCOURSE_PORT_NUMBER: "80"
 
-            DISCOURSE_REDIS_HOST: "@{service.redis.address}" //"redis"
-            DISCOURSE_REDIS_PASSWORD: "@{services.redis.secrets.admin.token}" //"secret://discourse/redis_password"
+            DISCOURSE_REDIS_HOST: "@{service.redis.address}"
+            DISCOURSE_REDIS_PASSWORD: "@{services.redis.secrets.admin.token}"
             DISCOURSE_REDIS_PORT_NUMBER: "6379"
 
-            DISCOURSE_SMTP_HOST: "secret://discourse/smtp_host"  //"mail.smtp.com"
-            DISCOURSE_SMTP_PORT: "secret://discourse/smtp_port" //"587"
-            DISCOURSE_SMTP_USER: "secret://discourse/smtp_user" //"user@gmail.com"
+            DISCOURSE_SMTP_HOST: "secret://discourse/smtp_host"
+            DISCOURSE_SMTP_PORT: "secret://discourse/smtp_port"
+            DISCOURSE_SMTP_USER: "secret://discourse/smtp_user"
             DISCOURSE_SMTP_PASSWORD:"secret://discourse/smtp_password"
             DISCOURSE_SMTP_PROTOCOL:""
 
@@ -56,9 +60,9 @@ containers: {
 
     sidekiq: {
         image: "docker.io/bitnami/discourse:3"
-        // dirs: {
-        //     "/bitnami/discourse": "volume://sidekiq"
-        // }
+        dirs: {
+            "/bitnami/discourse": "volume://sidekiq"
+        }
         cmd: ["/opt/bitnami/scripts/discourse-sidekiq/run.sh"]
         env: {
             DISCOURSE_HOST:"@{services.discourse.endpoint}"
@@ -70,13 +74,13 @@ containers: {
 
             DISCOURSE_PORT_NUMBER: "80"
 
-            DISCOURSE_REDIS_HOST:"@{service.redis.address}" //"redis"
-            DISCOURSE_REDIS_PASSWORD: "@{services.redis.secrets.admin.token}" //"secret://discourse/redis_password"
+            DISCOURSE_REDIS_HOST:"@{service.redis.address}"
+            DISCOURSE_REDIS_PASSWORD: "@{services.redis.secrets.admin.token}"
             DISCOURSE_REDIS_PORT_NUMBER:"6379"
 
-            DISCOURSE_SMTP_HOST: "secret://discourse/smtp_host"  //"mail.smtp.com"
-            DISCOURSE_SMTP_PORT: "secret://discourse/smtp_port" //"587"
-            DISCOURSE_SMTP_USER: "secret://discourse/smtp_user" //"user@gmail.com"
+            DISCOURSE_SMTP_HOST: "secret://discourse/smtp_host" 
+            DISCOURSE_SMTP_PORT: "secret://discourse/smtp_port" 
+            DISCOURSE_SMTP_USER: "secret://discourse/smtp_user"
             DISCOURSE_SMTP_PASSWORD:"secret://discourse/smtp_password"
             DISCOURSE_SMTP_PROTOCOL:"tls"
         }
@@ -98,17 +102,17 @@ secrets: discourse: {
 }
 
 
-// volumes: discourse: {
-//     size: "1G"
-//     accessModes: "readWriteOnce"
-// }
+volumes: discourse: {
+    size: "1G"
+    accessModes: "readWriteOnce"
+}
 
-// volumes: postgresql: {
-//     size: "1G"
-//     accessModes: "readWriteOnce"
-// }
+volumes: postgresql: {
+    size: "1G"
+    accessModes: "readWriteOnce"
+}
 
-// volumes: sidekiq: {
-//     size: "1G"
-//     accessModes: "readWriteOnce"
-// }
+volumes: sidekiq: {
+    size: "1G"
+    accessModes: "readWriteOnce"
+}
