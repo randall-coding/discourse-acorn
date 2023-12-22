@@ -78,14 +78,13 @@ If there are any errors check your acorn via the UI or with the following comman
 
 `acorn logs -f discourse`
 
+## Configure Discourse
 You can login into your admin account using:
 
 - USERNAME: discourse
-- PASSWORD: <discourse_secret_password_that_you_defined>
+- PASSWORD: `<password defined in your secrets>`
 
-## Configure Discourse
-
-You can define server's mailer configuration by setting the smtp values in the secrets object defined previously.  This allows your server to send notification emails to users and administrators.
+You can define the server's mailer configuration by setting the smtp values in the secrets object defined previously.  This allows your server to send notification emails to users and administrators.
 
 For more detailed instructions on working with your Discourse server see the getting started and configuration documentation.
 
